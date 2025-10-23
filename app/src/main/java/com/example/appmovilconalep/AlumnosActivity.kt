@@ -1,4 +1,4 @@
-package com.example.appmovilconalep
+import com.example.appmovilconalep.AsistenciaDB
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -60,8 +60,11 @@ class AlumnosActivity : AppCompatActivity() {
                 justificada = (which == 2)
             )
             val db = AsistenciaDB(this)
-            db.insertar(asistencia)
-            Toast.makeText(this, "Asistencia guardada", Toast.LENGTH_SHORT).show()
+            val alumno = "Kevin Fuentes"
+            val grupo = "6AVP"
+            val fecha = "2025-10-23"
+
+            db.insertar(alumno, grupo, fecha, this)
         }
         builder.show()
     }

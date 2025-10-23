@@ -1,27 +1,45 @@
-package com.example.appmovilconalep.basedatos
+package com.example.appmovilconalep
 
-object DefineTabla {
-    const val NOMBRE_BD = "controlconalep.db"
-    const val VERSION = 1
+import android.content.ContentValues
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+import android.widget.Toast
 
-    const val TABLA_ALUMNOS = "Alumnos"
-    const val TABLA_GRUPOS = "Grupos"
-    const val TABLA_ASISTENCIA = "Asistencia"
+class AsistenciaDB(context: Context) : SQLiteOpenHelper(context, "Asistencias.db", null, 1) {
 
-    // Campos Alumnos
-    const val COL_ID_ALUMNO = "id"
-    const val COL_NOMBRE = "nombre"
-    const val COL_MATRICULA = "matricula"
-    const val COL_ID_GRUPO = "idGrupo"
+    override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL(
+            "CREATE TABLE asistencia (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "alumno TEXT NOT NULL, " +
+                    "grupo TEXT NOT NULL, " +
+                    "fecha TEXT NOT NULL)"
+        )
+    }
 
-    // Campos Grupos
-    const val COL_ID_GRUPO_PK = "id"
-    const val COL_NOMBRE_GRUPO = "nombre"
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        db.execSQL("DROP TABLE IF EXISTS asistencia")
+        onCreate(db)
+    }
 
-    // Campos Asistencia
-    const val COL_ID_ASISTENCIA = "id"
-    const val COL_ID_ALUMNO_ASIS = "idAlumno"
-    const val COL_FECHA = "fecha"
-    const val COL_ASISTIO = "asistio"
-    const val COL_JUSTIFICADA = "justificada"
+    fun insertar(alumno: String, grupo: String, fecha: String, context: Context): Boolean {
+        val db = writableDatabase
+        val valores = ContentValues().apply {
+            put("alumno", alumno)
+            put("grupo", grupo)
+            put("fecha", fecha)
+        }
+
+        val resultado = db.insert("asistencia", null, valores)
+        db.close()
+
+        return if (resultado != -1L) {
+            Toast.makeText(context, "Asistencia registrada", Toast.LENGTH_SHORT).show()
+            true
+        } else {
+            Toast.makeText(context, "Error al registrar asistencia", Toast.LENGTH_SHORT).show()
+            false
+        }
+    }
 }
