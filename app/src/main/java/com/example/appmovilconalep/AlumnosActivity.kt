@@ -1,11 +1,12 @@
 package com.example.appmovilconalep
 
-package com.example.controlconalep
-
 import android.os.Bundle
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.controlconalep.basedatos.AsistenciaDB
+import com.example.appmovilconalep.basedatos.AsistenciaDB
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -13,20 +14,19 @@ class AlumnosActivity : AppCompatActivity() {
 
     lateinit var lista: ListView
     var alumnos = mutableListOf<Alumno>()
-    lateinit var idGrupo: String
+    var idGrupo: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alumnos)
 
         lista = findViewById(R.id.lvAlumnos)
-        idGrupo = intent.getIntExtra("idGrupo", 0).toString()
+        idGrupo = intent.getIntExtra("idGrupo", 0)
 
-        // Simulamos alumnos (más adelante vendrán de la BD)
         alumnos = mutableListOf(
-            Alumno(1, "Ana Pérez", "A001", idGrupo.toInt()),
-            Alumno(2, "Luis Ramírez", "A002", idGrupo.toInt()),
-            Alumno(3, "Carmen Soto", "A003", idGrupo.toInt())
+            Alumno(1, "Ana Pérez", "A001", idGrupo),
+            Alumno(2, "Luis Ramírez", "A002", idGrupo),
+            Alumno(3, "Carmen Soto", "A003", idGrupo)
         )
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, alumnos.map { it.nombre })
@@ -35,6 +35,15 @@ class AlumnosActivity : AppCompatActivity() {
         lista.setOnItemClickListener { _, _, position, _ ->
             val alumno = alumnos[position]
             mostrarDialogoAsistencia(alumno)
+        }
+
+        // Clic largo para ver historial
+        lista.setOnItemLongClickListener { _, _, position, _ ->
+            val alumno = alumnos[position]
+            val intent = android.content.Intent(this, HistorialActivity::class.java)
+            intent.putExtra("idAlumno", alumno.id)
+            startActivity(intent)
+            true
         }
     }
 
