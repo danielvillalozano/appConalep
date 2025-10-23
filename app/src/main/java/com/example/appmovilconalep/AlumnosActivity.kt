@@ -1,5 +1,6 @@
-import com.example.appmovilconalep.AsistenciaDB
+package com.example.appmovilconalep
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.ListView
@@ -12,9 +13,9 @@ import java.util.*
 
 class AlumnosActivity : AppCompatActivity() {
 
-    lateinit var lista: ListView
-    var alumnos = mutableListOf<Alumno>()
-    var idGrupo: Int = 0
+    private lateinit var lista: ListView
+    private var alumnos = mutableListOf<Alumno>()
+    private var idGrupo: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,25 +30,26 @@ class AlumnosActivity : AppCompatActivity() {
             Alumno(3, "Carmen Soto", "A003", idGrupo)
         )
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, alumnos.map { it.nombre })
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_list_item_1,
+            alumnos.map { it.nombre }
+        )
         lista.adapter = adapter
 
         lista.setOnItemClickListener { _, _, position, _ ->
-            val alumno = alumnos[position]
-            mostrarDialogoAsistencia(alumno)
+            mostrarDialogoAsistencia(alumnos[position])
         }
 
-        // Clic largo para ver historial
         lista.setOnItemLongClickListener { _, _, position, _ ->
-            val alumno = alumnos[position]
-            val intent = android.content.Intent(this, HistorialActivity::class.java)
-            intent.putExtra("idAlumno", alumno.id)
+            val intent = Intent(this, HistorialActivity::class.java)
+            intent.putExtra("idAlumno", alumnos[position].id)
             startActivity(intent)
             true
         }
     }
 
-    fun mostrarDialogoAsistencia(alumno: Alumno) {
+    private fun mostrarDialogoAsistencia(alumno: Alumno) {
         val opciones = arrayOf("Asistió", "Faltó", "Justificada")
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Asistencia de ${alumno.nombre}")
@@ -60,16 +62,17 @@ class AlumnosActivity : AppCompatActivity() {
                 justificada = (which == 2)
             )
             val db = AsistenciaDB(this)
-            val alumno = "Kevin Fuentes"
-            val grupo = "6AVP"
-            val fecha = "2025-10-23"
-
-            db.insertar(alumno, grupo, fecha, this)
+            val exito = db.insertar(asistencia)
+            Toast.makeText(
+                this,
+                if (exito) "Asistencia guardada correctamente" else "Error al guardar",
+                Toast.LENGTH_SHORT
+            ).show()
         }
         builder.show()
     }
 
-    fun fechaActual(): String {
+    private fun fechaActual(): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return sdf.format(Date())
     }

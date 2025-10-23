@@ -1,7 +1,5 @@
 package com.example.appmovilconalep
 
-package com.example.controlconalep
-
 import android.content.Intent
 import android.os.Bundle
 import android.widget.AdapterView

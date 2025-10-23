@@ -1,45 +1,24 @@
-package com.example.appmovilconalep
+package com.example.appmovilconalep.basedatos
 
-import android.content.ContentValues
-import android.content.Context
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
-import android.widget.Toast
+object DefineTabla {
+    const val NOMBRE_BD = "controlconalep.db"
+    const val VERSION = 1
 
-class AsistenciaDB(context: Context) : SQLiteOpenHelper(context, "Asistencias.db", null, 1) {
+    const val TABLA_ALUMNOS = "Alumnos"
+    const val TABLA_GRUPOS = "Grupos"
+    const val TABLA_ASISTENCIA = "Asistencia"
 
-    override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL(
-            "CREATE TABLE asistencia (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "alumno TEXT NOT NULL, " +
-                    "grupo TEXT NOT NULL, " +
-                    "fecha TEXT NOT NULL)"
-        )
-    }
+    const val COL_ID_ALUMNO = "id"
+    const val COL_NOMBRE = "nombre"
+    const val COL_MATRICULA = "matricula"
+    const val COL_ID_GRUPO = "idGrupo"
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS asistencia")
-        onCreate(db)
-    }
+    const val COL_ID_GRUPO_PK = "id"
+    const val COL_NOMBRE_GRUPO = "nombre"
 
-    fun insertar(alumno: String, grupo: String, fecha: String, context: Context): Boolean {
-        val db = writableDatabase
-        val valores = ContentValues().apply {
-            put("alumno", alumno)
-            put("grupo", grupo)
-            put("fecha", fecha)
-        }
-
-        val resultado = db.insert("asistencia", null, valores)
-        db.close()
-
-        return if (resultado != -1L) {
-            Toast.makeText(context, "Asistencia registrada", Toast.LENGTH_SHORT).show()
-            true
-        } else {
-            Toast.makeText(context, "Error al registrar asistencia", Toast.LENGTH_SHORT).show()
-            false
-        }
-    }
+    const val COL_ID_ASISTENCIA = "id"
+    const val COL_ID_ALUMNO_ASIS = "idAlumno"
+    const val COL_FECHA = "fecha"
+    const val COL_ASISTIO = "asistio"
+    const val COL_JUSTIFICADA = "justificada"
 }

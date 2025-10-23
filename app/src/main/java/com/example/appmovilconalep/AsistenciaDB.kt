@@ -4,20 +4,18 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
 
 class AsistenciaDB(context: Context) {
 
     private val dbHelper = DBHelper(context)
 
-    // Insertar nueva asistencia
-    fun insertarAsistencia(idAlumno: Int, fecha: String, asistio: Boolean, justificada: Boolean): Boolean {
+    fun insertar(asistencia: com.example.appmovilconalep.Asistencia): Boolean {
         val db: SQLiteDatabase = dbHelper.writableDatabase
         val valores = ContentValues().apply {
-            put(DefineTabla.COL_ID_ALUMNO_ASIS, idAlumno)
-            put(DefineTabla.COL_FECHA, fecha)
-            put(DefineTabla.COL_ASISTIO, if (asistio) 1 else 0)
-            put(DefineTabla.COL_JUSTIFICADA, if (justificada) 1 else 0)
+            put(DefineTabla.COL_ID_ALUMNO_ASIS, asistencia.idAlumno)
+            put(DefineTabla.COL_FECHA, asistencia.fecha)
+            put(DefineTabla.COL_ASISTIO, if (asistencia.asistio) 1 else 0)
+            put(DefineTabla.COL_JUSTIFICADA, if (asistencia.justificada) 1 else 0)
         }
 
         val resultado = db.insert(DefineTabla.TABLA_ASISTENCIA, null, valores)
@@ -25,10 +23,9 @@ class AsistenciaDB(context: Context) {
         return resultado != -1L
     }
 
-    // Obtener todas las asistencias por alumno
-    fun obtenerAsistenciasPorAlumno(idAlumno: Int): List<Map<String, Any>> {
+    fun obtenerPorAlumno(idAlumno: Int): List<com.example.appmovilconalep.Asistencia> {
         val db = dbHelper.readableDatabase
-        val lista = mutableListOf<Map<String, Any>>()
+        val lista = mutableListOf<com.example.appmovilconalep.Asistencia>()
 
         val query = """
             SELECT ${DefineTabla.COL_FECHA}, ${DefineTabla.COL_ASISTIO}, ${DefineTabla.COL_JUSTIFICADA}
@@ -38,37 +35,22 @@ class AsistenciaDB(context: Context) {
         """.trimIndent()
 
         val cursor: Cursor = db.rawQuery(query, arrayOf(idAlumno.toString()))
-
         if (cursor.moveToFirst()) {
             do {
-                val asistencia = mapOf(
-                    "fecha" to cursor.getString(0),
-                    "asistio" to (cursor.getInt(1) == 1),
-                    "justificada" to (cursor.getInt(2) == 1)
+                lista.add(
+                    com.example.appmovilconalep.Asistencia(
+                        id = 0,
+                        idAlumno = idAlumno,
+                        fecha = cursor.getString(0),
+                        asistio = cursor.getInt(1) == 1,
+                        justificada = cursor.getInt(2) == 1
+                    )
                 )
-                lista.add(asistencia)
             } while (cursor.moveToNext())
         }
 
         cursor.close()
         db.close()
         return lista
-    }
-
-    // Obtener total de asistencias por alumno
-    fun contarAsistencias(idAlumno: Int): Int {
-        val db = dbHelper.readableDatabase
-        val query = """
-            SELECT COUNT(*)
-            FROM ${DefineTabla.TABLA_ASISTENCIA}
-            WHERE ${DefineTabla.COL_ID_ALUMNO_ASIS} = ? AND ${DefineTabla.COL_ASISTIO} = 1
-        """.trimIndent()
-
-        val cursor = db.rawQuery(query, arrayOf(idAlumno.toString()))
-        val total = if (cursor.moveToFirst()) cursor.getInt(0) else 0
-
-        cursor.close()
-        db.close()
-        return total
     }
 }
