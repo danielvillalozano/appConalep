@@ -1,27 +1,27 @@
-package com.example.AppMovilConalep.basedatos
+package com.example.appmovilconalep.basedatos
 
 object DefineTabla {
+    const val NOMBRE_BD = "controlconalep.db"
+    const val VERSION = 1
 
-    object Grupo {
-        const val NOMBRE_TABLA = "grupo"
-        const val COLUMNA_ID = "id"
-        const val COLUMNA_NOMBRE = "nombre"
-    }
+    const val TABLA_ALUMNOS = "Alumnos"
+    const val TABLA_GRUPOS = "Grupos"
+    const val TABLA_ASISTENCIA = "Asistencia"
 
-    object Alumno {
-        const val NOMBRE_TABLA = "alumno"
-        const val COLUMNA_ID = "id"
-        const val COLUMNA_NOMBRE = "nombre"
-        const val COLUMNA_MATRICULA = "matricula"
-        const val COLUMNA_ID_GRUPO = "idGrupo"
-    }
+    // Campos Alumnos
+    const val COL_ID_ALUMNO = "id"
+    const val COL_NOMBRE = "nombre"
+    const val COL_MATRICULA = "matricula"
+    const val COL_ID_GRUPO = "idGrupo"
 
-    object Asistencia {
-        const val NOMBRE_TABLA = "asistencia"
-        const val COLUMNA_ID = "id"
-        const val COLUMNA_ID_ALUMNO = "idAlumno"
-        const val COLUMNA_FECHA = "fecha"
-        const val COLUMNA_ASISTIO = "asistio"
-        const val COLUMNA_JUSTIFICADA = "justificada"
-    }
+    // Campos Grupos
+    const val COL_ID_GRUPO_PK = "id"
+    const val COL_NOMBRE_GRUPO = "nombre"
+
+    // Campos Asistencia
+    const val COL_ID_ASISTENCIA = "id"
+    const val COL_ID_ALUMNO_ASIS = "idAlumno"
+    const val COL_FECHA = "fecha"
+    const val COL_ASISTIO = "asistio"
+    const val COL_JUSTIFICADA = "justificada"
 }

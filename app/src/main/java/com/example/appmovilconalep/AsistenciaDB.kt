@@ -3,7 +3,7 @@ package com.example.appmovilconalep.basedatos
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.example.controlconalep.Asistencia
+import com.example.appmovilconalep.Asistencia
 
 class AsistenciaDB(context: Context) {
 
