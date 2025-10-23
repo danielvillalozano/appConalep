@@ -1,4 +1,6 @@
 package com.example.appmovilconalep
 
-class Grupo {
-}
+data class Grupo(
+    var id: Int = 0,
+    var nombre: String
+)
