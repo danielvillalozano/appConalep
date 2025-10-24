@@ -1,39 +1,21 @@
 package com.example.appmovilconalep
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 
 class GruposActivity : AppCompatActivity() {
-
-    lateinit var listViewGrupos: ListView
-
-    // Lista simulada de grupos por ahora
-    val grupos = listOf(
-        Grupos(1, "1°A"),
-        Grupos(2, "2°B"),
-        Grupos(3, "3°C")
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_grupos)
 
-        listViewGrupos = findViewById(R.id.lvGrupos)
+        val listaGrupos = findViewById<ListView>(R.id.listaGrupos)
+        val dbHelper = DBHelper(this)
+        val gruposDB = GruposDB(dbHelper)
+        val lista = gruposDB.obtenerGrupos()
 
-        val nombresGrupos = grupos.map { it.nombre }
-
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, nombresGrupos)
-        listViewGrupos.adapter = adapter
-
-        listViewGrupos.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            val grupoSeleccionado = grupos[position]
-            val intent = Intent(this, AlumnosActivity::class.java)
-            intent.putExtra("idGrupo", grupoSeleccionado.id)
-            startActivity(intent)
-        }
+        val adaptador = ArrayAdapter(this, android.R.layout.simple_list_item_1, lista)
+        listaGrupos.adapter = adaptador
     }
 }
