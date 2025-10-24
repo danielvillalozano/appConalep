@@ -1,7 +1,7 @@
-package com.example.appmovilconalep
+package com.example.appmovilconalep.modelos
 
 data class Alumnos(
-    var id_alumno: Int,
-    var nombre: String,
-    var id_grupo: Int
+    val id_alumno: Int,
+    val nombre: String,
+    val id_grupo: Int
 )

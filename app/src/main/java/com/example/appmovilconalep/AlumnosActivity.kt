@@ -11,11 +11,12 @@ class AlumnosActivity : AppCompatActivity() {
         setContentView(R.layout.activity_alumnos)
 
         val listaAlumnos = findViewById<ListView>(R.id.listaAlumnos)
-        val dbHelper = DBHelper(this)
-        val alumnosDB = AlumnosDB(dbHelper)
-        val lista = alumnosDB.obtenerAlumnos()
+        val alumnosDB = AlumnosDB(this)
+        val lista = alumnosDB.obtenerTodos()
 
-        val adaptador = ArrayAdapter(this, android.R.layout.simple_list_item_1, lista)
+        val nombres = lista.map { it.nombre }
+
+        val adaptador = ArrayAdapter(this, android.R.layout.simple_list_item_1, nombres)
         listaAlumnos.adapter = adaptador
     }
 }
