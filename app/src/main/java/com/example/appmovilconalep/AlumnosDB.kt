@@ -1,30 +1,31 @@
 package com.example.appmovilconalep
 
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
+import android.database.Cursor
+import com.example.appmovilconalep.modelos.Alumnos
 
-class AlumnosDB(context: Context) {
+class AlumnosDB(private val context: Context) {
+
     private val dbHelper = DBHelper(context)
-    private lateinit var db: SQLiteDatabase
 
-    fun abrir() {
-        db = dbHelper.readableDatabase
-    }
+    fun obtenerTodos(): List<Alumnos> {
+        val listaAlumnos = mutableListOf<Alumnos>()
+        val db = dbHelper.readableDatabase
+        val cursor: Cursor = db.rawQuery("SELECT * FROM ${DefineTabla.Alumnos.TABLA}", null)
 
-    fun cerrar() {
-        db.close()
-    }
-
-    fun obtenerNombrePorID(idAlumno: Int): String {
-        var nombre = ""
-        val cursor = db.rawQuery(
-            "SELECT nombre FROM ${DefineTabla.TABLA_ALUMNOS} WHERE ${DefineTabla.CAMPO_ID_ALUMNO} = ?",
-            arrayOf(idAlumno.toString())
-        )
         if (cursor.moveToFirst()) {
-            nombre = cursor.getString(0)
+            do {
+                val alumno = Alumnos(
+                    id = cursor.getInt(cursor.getColumnIndexOrThrow(DefineTabla.Alumnos.ID)),
+                    nombre = cursor.getString(cursor.getColumnIndexOrThrow(DefineTabla.Alumnos.NOMBRE)),
+                    id_grupo = cursor.getInt(cursor.getColumnIndexOrThrow(DefineTabla.Alumnos.ID_GRUPO))
+                )
+                listaAlumnos.add(alumno)
+            } while (cursor.moveToNext())
         }
+
         cursor.close()
-        return nombre
+        db.close()
+        return listaAlumnos
     }
 }

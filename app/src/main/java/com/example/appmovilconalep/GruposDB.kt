@@ -1,30 +1,30 @@
 package com.example.appmovilconalep
 
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
+import android.database.Cursor
+import com.example.appmovilconalep.modelos.Grupos
 
-class GruposDB(context: Context) {
+class GruposDB(private val context: Context) {
+
     private val dbHelper = DBHelper(context)
-    private lateinit var db: SQLiteDatabase
 
-    fun abrir() {
-        db = dbHelper.readableDatabase
-    }
+    fun obtenerTodos(): List<Grupos> {
+        val listaGrupos = mutableListOf<Grupos>()
+        val db = dbHelper.readableDatabase
+        val cursor: Cursor = db.rawQuery("SELECT * FROM ${DefineTabla.Grupos.TABLA}", null)
 
-    fun cerrar() {
-        db.close()
-    }
-
-    fun obtenerNombrePorID(idGrupo: Int): String {
-        var nombre = ""
-        val cursor = db.rawQuery(
-            "SELECT nombre FROM ${DefineTabla.TABLA_GRUPOS} WHERE ${DefineTabla.CAMPO_ID_GRUPO} = ?",
-            arrayOf(idGrupo.toString())
-        )
         if (cursor.moveToFirst()) {
-            nombre = cursor.getString(0)
+            do {
+                val grupo = Grupos(
+                    id = cursor.getInt(cursor.getColumnIndexOrThrow(DefineTabla.Grupos.ID)),
+                    nombre = cursor.getString(cursor.getColumnIndexOrThrow(DefineTabla.Grupos.NOMBRE))
+                )
+                listaGrupos.add(grupo)
+            } while (cursor.moveToNext())
         }
+
         cursor.close()
-        return nombre
+        db.close()
+        return listaGrupos
     }
 }

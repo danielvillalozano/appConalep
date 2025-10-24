@@ -3,27 +3,34 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
     android:gravity="center"
-    android:background="#E3F2FD">
+    android:padding="24dp"
+    android:background="#f0f0f0">
 
     <Button
         android:id="@+id/btnGrupos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Grupos"
-        android:layout_marginBottom="20dp"/>
+        android:text="Registrar Grupos"
+        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/btnAlumnos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Alumnos"
-        android:layout_marginBottom="20dp"/>
+        android:text="Registrar Alumnos"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnAsistencia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Registrar Asistencia"
+        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/btnHistorial"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Historial de Asistencia" />
+        android:text="Consultar Historial" />
 </LinearLayout>
