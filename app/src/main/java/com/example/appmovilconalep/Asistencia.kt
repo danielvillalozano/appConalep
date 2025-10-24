@@ -1,9 +1,9 @@
 package com.example.appmovilconalep
 
 data class Asistencia(
-    var id: Int = 0,
-    var idAlumno: Int,
+    var id_asistencia: Int,
+    var id_alumno: Int,
     var fecha: String,
-    var asistio: Boolean,
-    var justificada: Boolean
+    var estatus: String,
+    var justificacion: String
 )

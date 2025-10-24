@@ -1,24 +1,26 @@
-package com.example.appmovilconalep.basedatos
+package com.example.appmovilconalep
 
-object DefineTabla {
-    const val NOMBRE_BD = "controlconalep.db"
-    const val VERSION = 1
+class DefineTabla {
+    companion object {
+        const val DB_NAME = "app_movil_conalep.db"
+        const val DB_VERSION = 1
 
-    const val TABLA_ALUMNOS = "Alumnos"
-    const val TABLA_GRUPOS = "Grupos"
-    const val TABLA_ASISTENCIA = "Asistencia"
+        // Tabla GRUPOS
+        const val TABLA_GRUPOS = "grupos"
+        const val CAMPO_ID_GRUPO = "id_grupo"
+        const val CAMPO_NOMBRE_GRUPO = "nombre_grupo"
 
-    const val COL_ID_ALUMNO = "id"
-    const val COL_NOMBRE = "nombre"
-    const val COL_MATRICULA = "matricula"
-    const val COL_ID_GRUPO = "idGrupo"
+        // Tabla ALUMNOS
+        const val TABLA_ALUMNOS = "alumnos"
+        const val CAMPO_ID_ALUMNO = "id_alumno"
+        const val CAMPO_NOMBRE_ALUMNO = "nombre_alumno"
+        const val CAMPO_ID_GRUPO_FK = "id_grupo"
 
-    const val COL_ID_GRUPO_PK = "id"
-    const val COL_NOMBRE_GRUPO = "nombre"
-
-    const val COL_ID_ASISTENCIA = "id"
-    const val COL_ID_ALUMNO_ASIS = "idAlumno"
-    const val COL_FECHA = "fecha"
-    const val COL_ASISTIO = "asistio"
-    const val COL_JUSTIFICADA = "justificada"
+        // Tabla HISTORIAL
+        const val TABLA_HISTORIAL = "historial"
+        const val CAMPO_ID_HISTORIAL = "id_historial"
+        const val CAMPO_ID_ALUMNO_FK = "id_alumno"
+        const val CAMPO_FECHA = "fecha"
+        const val CAMPO_ASISTENCIA = "asistencia"
+    }
 }

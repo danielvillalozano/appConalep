@@ -14,7 +14,7 @@ import java.util.*
 class AlumnosActivity : AppCompatActivity() {
 
     private lateinit var lista: ListView
-    private var alumnos = mutableListOf<Alumno>()
+    private var alumnos = mutableListOf<Alumnos>()
     private var idGrupo: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,9 +25,9 @@ class AlumnosActivity : AppCompatActivity() {
         idGrupo = intent.getIntExtra("idGrupo", 0)
 
         alumnos = mutableListOf(
-            Alumno(1, "Ana Pérez", "A001", idGrupo),
-            Alumno(2, "Luis Ramírez", "A002", idGrupo),
-            Alumno(3, "Carmen Soto", "A003", idGrupo)
+            Alumnos(1, "Ana Pérez", "A001", idGrupo),
+            Alumnos(2, "Luis Ramírez", "A002", idGrupo),
+            Alumnos(3, "Carmen Soto", "A003", idGrupo)
         )
 
         val adapter = ArrayAdapter(
@@ -49,7 +49,7 @@ class AlumnosActivity : AppCompatActivity() {
         }
     }
 
-    private fun mostrarDialogoAsistencia(alumno: Alumno) {
+    private fun mostrarDialogoAsistencia(alumno: Alumnos) {
         val opciones = arrayOf("Asistió", "Faltó", "Justificada")
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Asistencia de ${alumno.nombre}")

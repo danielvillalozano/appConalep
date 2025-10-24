@@ -1,4 +1,4 @@
-package com.example.appmovilconalep.basedatos
+package com.example.appmovilconalep
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -6,47 +6,44 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class DBHelper(context: Context) : SQLiteOpenHelper(
     context,
-    DefineTabla.NOMBRE_BD,
+    DefineTabla.DB_NAME,
     null,
-    DefineTabla.VERSION
+    DefineTabla.DB_VERSION
 ) {
-
     override fun onCreate(db: SQLiteDatabase) {
-        val crearAlumnos = """
-            CREATE TABLE ${DefineTabla.TABLA_ALUMNOS} (
-                ${DefineTabla.COL_ID_ALUMNO} INTEGER PRIMARY KEY AUTOINCREMENT,
-                ${DefineTabla.COL_NOMBRE} TEXT,
-                ${DefineTabla.COL_MATRICULA} TEXT,
-                ${DefineTabla.COL_ID_GRUPO} INTEGER
-            )
-        """.trimIndent()
-
-        val crearGrupos = """
+        val createGrupos = """
             CREATE TABLE ${DefineTabla.TABLA_GRUPOS} (
-                ${DefineTabla.COL_ID_GRUPO_PK} INTEGER PRIMARY KEY AUTOINCREMENT,
-                ${DefineTabla.COL_NOMBRE_GRUPO} TEXT
+                ${DefineTabla.CAMPO_ID_GRUPO} INTEGER PRIMARY KEY AUTOINCREMENT,
+                ${DefineTabla.CAMPO_NOMBRE_GRUPO} TEXT
             )
         """.trimIndent()
 
-        val crearAsistencia = """
-            CREATE TABLE ${DefineTabla.TABLA_ASISTENCIA} (
-                ${DefineTabla.COL_ID_ASISTENCIA} INTEGER PRIMARY KEY AUTOINCREMENT,
-                ${DefineTabla.COL_ID_ALUMNO_ASIS} INTEGER,
-                ${DefineTabla.COL_FECHA} TEXT,
-                ${DefineTabla.COL_ASISTIO} INTEGER,
-                ${DefineTabla.COL_JUSTIFICADA} INTEGER
+        val createAlumnos = """
+            CREATE TABLE ${DefineTabla.TABLA_ALUMNOS} (
+                ${DefineTabla.CAMPO_ID_ALUMNO} INTEGER PRIMARY KEY AUTOINCREMENT,
+                ${DefineTabla.CAMPO_NOMBRE_ALUMNO} TEXT,
+                ${DefineTabla.CAMPO_ID_GRUPO_FK} INTEGER
             )
         """.trimIndent()
 
-        db.execSQL(crearAlumnos)
-        db.execSQL(crearGrupos)
-        db.execSQL(crearAsistencia)
+        val createHistorial = """
+            CREATE TABLE ${DefineTabla.TABLA_HISTORIAL} (
+                ${DefineTabla.CAMPO_ID_HISTORIAL} INTEGER PRIMARY KEY AUTOINCREMENT,
+                ${DefineTabla.CAMPO_ID_ALUMNO_FK} INTEGER,
+                ${DefineTabla.CAMPO_FECHA} TEXT,
+                ${DefineTabla.CAMPO_ASISTENCIA} TEXT
+            )
+        """.trimIndent()
+
+        db.execSQL(createGrupos)
+        db.execSQL(createAlumnos)
+        db.execSQL(createHistorial)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS ${DefineTabla.TABLA_ALUMNOS}")
         db.execSQL("DROP TABLE IF EXISTS ${DefineTabla.TABLA_GRUPOS}")
-        db.execSQL("DROP TABLE IF EXISTS ${DefineTabla.TABLA_ASISTENCIA}")
+        db.execSQL("DROP TABLE IF EXISTS ${DefineTabla.TABLA_ALUMNOS}")
+        db.execSQL("DROP TABLE IF EXISTS ${DefineTabla.TABLA_HISTORIAL}")
         onCreate(db)
     }
 }

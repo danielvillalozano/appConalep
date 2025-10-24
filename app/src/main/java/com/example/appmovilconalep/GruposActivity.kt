@@ -13,9 +13,9 @@ class GruposActivity : AppCompatActivity() {
 
     // Lista simulada de grupos por ahora
     val grupos = listOf(
-        Grupo(1, "1°A"),
-        Grupo(2, "2°B"),
-        Grupo(3, "3°C")
+        Grupos(1, "1°A"),
+        Grupos(2, "2°B"),
+        Grupos(3, "3°C")
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
